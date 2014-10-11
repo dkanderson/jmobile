@@ -2,9 +2,10 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'models/model',
-    'collections/collection'
-], function ($, _, Backbone, Model, NewCollection) {
+    'models/story',
+    'views/header',
+    'collections/newsCollection'
+], function ($, _, Backbone, Model, HeaderView, NewsCollection) {
 
     'use strict';
 
@@ -12,7 +13,7 @@ define([
 
         // Instead of generating a new element, bind to the existing skeleton of
         // the App already present in the HTML.
-        el: '#wrapper',
+        el: '#appMain',
 
         events: {
             // events heres
@@ -20,6 +21,14 @@ define([
 
         initialize: function () {
             //run initial functions
+            var header = new HeaderView();
+            this.$el.append(header.render().el);
+            NewsCollection.fetch({
+                success: function (data) {
+                    console.log(data);        
+                }
+            });
+            
             this.render();
         },
 
