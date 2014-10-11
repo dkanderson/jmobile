@@ -6,7 +6,7 @@ define(['backbone', 'handlebars'], function (Backbone, Handlebars) {
 
         className: 'header',
 
-        template: Handlebars.compile($('#headerTpl').html()),
+        template: $('#headerTpl').html(),
 
         events: {
             'click .mobile-trigger': 'openPanel',
