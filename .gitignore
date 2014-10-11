@@ -1,0 +1,5 @@
+node_modules
+assets/img
+assets/js/vendor/*
+.sass-cache
+.DS_Store
