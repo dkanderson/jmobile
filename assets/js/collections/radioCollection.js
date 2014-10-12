@@ -13,7 +13,7 @@ define([
         url: '../data/radio.json',
 
         parse: function (resp) {
-        	return resp.posts;
+            return resp.posts;
         }
 
     });
