@@ -3,7 +3,7 @@ define(['backbone', 'handlebars'], function (Backbone, Handlebars) {
 
     var FeaturedView = Backbone.View.extend({
 
-        el: '#featured',
+        className: '.featured-story',
 
         template: Handlebars.compile($('#featuredTpl').html()),
 
