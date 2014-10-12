@@ -4,28 +4,29 @@ define(['jquery', 'backbone'], function ($, Backbone) {
 
 	var NavPanel = Backbone.View.extend({
 
-		el: '#right-panel',
+		className: 'panel panel-left',
 
         template: $('#navTpl').html(),
         
         events: {
             'click a': 'closePanel'
         },
+
+        initialize: function () {
+            this.render();
+            App.Vent.on('toggle:panel', this.toggle, this);
+        },
         
         closePanel: function () {
-            this.$el.removeClass('show-panel');
+            this.$el.removeClass('panel-is-open');
         },
         
         openPanel: function () {
-            this.$el.addClass('show-panel');
+            this.$el.addClass('panel-is-open');
         },
         
         toggle: function () {
-            this.$el.toggleClass('show-panel');
-        },
-        
-        initialize: function () {
-            this.render();
+            this.$el.toggleClass('panel-is-open');
         },
         
         render: function () {

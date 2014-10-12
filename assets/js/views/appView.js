@@ -4,8 +4,9 @@ define([
     'backbone',
     'models/story',
     'views/header',
+    'views/navPanel',
     'collections/newsCollection'
-], function ($, _, Backbone, Model, HeaderView, NewsCollection) {
+], function ($, _, Backbone, Model, HeaderView, NavPanel, NewsCollection) {
 
     'use strict';
 
@@ -21,14 +22,18 @@ define([
 
         initialize: function () {
             //run initial functions
-            var header = new HeaderView();
+            var navPanel = new NavPanel();
+            var header = new HeaderView({ nav: navPanel});
+
             this.$el.append(header.render().el);
+            this.$el.append(navPanel.render().el);
+
             NewsCollection.fetch({
                 success: function (data) {
-                    console.log(data);        
+                    console.log(data);
                 }
             });
-            
+
             this.render();
         },
 

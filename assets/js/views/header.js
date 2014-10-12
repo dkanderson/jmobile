@@ -1,4 +1,4 @@
-define(['backbone', 'handlebars'], function (Backbone, Handlebars) {
+define(['backbone', 'handlebars', 'views/navPanel'], function (Backbone, Handlebars, NavPanel) {
 
     'use strict';
 
@@ -24,7 +24,7 @@ define(['backbone', 'handlebars'], function (Backbone, Handlebars) {
 
         openPanel: function (e) {
             e.preventDefault();
-            //navPanel.toggle();
+            App.Vent.trigger('toggle:panel');
         },
 
         goBack: function (e) {
