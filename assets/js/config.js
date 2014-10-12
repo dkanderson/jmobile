@@ -18,8 +18,8 @@ requirejs.config({
 });
 
 // Initialize App
-require(['underscore', 'backbone', 'views/appView', 'routers/router'], function (_, Backbone, AppView, Workspace) {
-    
+require(['underscore', 'backbone', 'views/app', 'routers/router'], function (_, Backbone, AppView, Workspace) {
+
     // Global Namespaced object to communicate between modules
     window.App = {
         Vent: _.extend({}, Backbone.Events)
