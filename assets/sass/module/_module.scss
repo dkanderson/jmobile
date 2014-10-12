@@ -1,3 +1,37 @@
+.panel{
+	width:50%;
+    max-width: 400px;
+    height:100%;
+    position: fixed;
+
+    -webkit-transition: ease 0.6s;
+    -o-transition: ease 0.6s;
+    transition: ease 0.6s;
+
+    z-index: 99999;
+
+    .icon{
+	    fill:#fff;
+	    width:15px;
+	    height:15px;
+	    margin-left: 5px;
+	}
+
+    .sidebar-nav{
+		a{
+			display:block;
+		    color: rgba(255,255,255,0.85);
+		    font-size: 1.2em;
+		    font-weight:100;
+		    text-align: right;
+		    line-height: 3em;
+		    padding-right:20px;
+		    border-bottom:1px solid rgba(0,0,0,0.5);
+		    border-top:1px solid rgba(255,255,255,0.1);
+		}
+    }
+}
+
 .l-media-list{
 	
 }

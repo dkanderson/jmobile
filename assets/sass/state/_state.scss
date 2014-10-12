@@ -1,0 +1,14 @@
+.panel{
+	
+	&.panel-is-open{
+		-webkit-transform: translateX(0px);
+	    -ms-transform: translateX(0px);
+	    -o-transform: translateX(0px);
+	    transform: translateX(0px);
+
+	    -webkit-transition: ease-in-out 0.6s;
+	    -o-transition: ease-in-out 0.6s;
+	    transition: ease-in-out 0.6s;
+	}
+	
+}

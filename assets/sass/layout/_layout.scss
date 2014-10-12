@@ -3,3 +3,76 @@
     display: none;
 }
 
+.header{
+	border-bottom:1px solid #fed23a;
+    height:50px;
+    position:fixed;
+    width:100%;
+    z-index: 9999;
+    background: #000;
+    a{
+		text-decoration: none;
+	    display: block;
+	    width:50%;
+	    &.share{
+		    display: block;
+		    position: absolute;
+		    top:14px;
+		    right:60px;
+		    width:20px;
+		    height:20px;
+		}
+		&.mobile-trigger{
+			display: block;
+		    position: absolute;
+		    width:25px;
+		    height: 30px;
+		    top:14px;
+		    right:20px;
+		    cursor: pointer;
+		    span{
+		    	display: block;
+			    background-color: #fff;
+			    width:25px;
+			    height:2px;
+			    margin-bottom: 5px;
+		    }
+		}
+    }
+    h1{
+    	padding-left: 65px;
+	    line-height: 50px;
+	    font-family: 'HelveticaNeue', Helvetica, Arial;
+	    font-size: 1em;
+	    font-weight: 100;
+	    text-transform: uppercase;
+	    color:#fed23a;
+	    span{
+	    	color:#fff;
+    		font-weight:300;
+	    }
+	    &:before{
+	    	content: url(../img/icon.png);
+		    display: block;
+		    position:absolute;
+		    left:20px;
+		    top:50%;
+		    margin-top:-18px;
+	    }
+    }
+    i{
+	    position: absolute;
+	    left:5px;
+	    top:2px;
+	    .icon-arrow-left{
+		    fill:#ccc;
+		    width:15px;
+		    height:15px;
+		}
+	}
+	.icon-share{
+	    fill:#fff;
+	    width:20px;
+	    height:20px;
+	}
+}
