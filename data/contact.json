@@ -1,0 +1,38 @@
+{
+    "contact": [{
+        "title": "Head Office",
+        "address1": "58a Half Way Tree Road,",
+        "address2": "Kingston 10",
+        "city": "Kingston",
+        "parish": "Saint Andrew",
+        "phone": ["926-3740", "926-3741", "926-3742", "926-3743", "926-3744", "926-3745", "926-3746"],
+        "email": "info@jis.gov.jm",
+        "long": "18.00454",
+        "lat": "-76.79272",
+        "open": "09:00-17:00 Monday to Friday; excluding Public Holidays"
+    }, 
+    {
+        "title": "Television Department",
+        "address1": "Caenwood Centre",
+        "address2": "37 Arnold Road",
+        "city": "Kingston",
+        "parish": "Kingston",
+        "phone": ["922-8680", "922-8681", "922-8682"],
+        "email": "info@jis.gov.jm",
+        "long": "17.98759",
+        "lat": "-76.78381",
+        "open": "09:00-17:00 Monday to Friday; excluding Public Holidays"
+    }, 
+    {
+        "title": "Montego Bay Branch",
+        "address1": "2nd Floor, NHT Building, 42 B-C",
+        "address2": "Union Street",
+        "city": "Montego Bay",
+        "parish": "Falmouth",
+        "phone": ["952-6604"],
+        "email": "info@jis.gov.jm",
+        "long": "18.47438",
+        "lat": "-77.91973",
+        "open": "09:00-17:00 Monday to Friday; excluding Public Holidays"
+    }]
+}

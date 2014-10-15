@@ -423,7 +423,7 @@ th {
 }
 
 
-
+@import url(http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Open+Sans);
 
 /* General Styles */
 
@@ -434,7 +434,7 @@ th {
 
 body {       
     background:url(../img/farmer.png);
-    font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+    font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial, 'Droid Sans', sans-serif;
     font-size:100%;
     line-height: 1.45;
     font-weight:400;
@@ -448,7 +448,7 @@ p {margin-bottom: 1.3em;}
 
 h1, h2, h3, h4 {
   margin: 1.414em 0 0.5em;
-  font-family: Helvetica Neue;
+  font-family: 'Open Sans Condensed', 'Droid Sans' sans-serif;
   font-weight: inherit;
   line-height: 1.2;
 }

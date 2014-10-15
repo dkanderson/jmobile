@@ -3,6 +3,12 @@
     display: none;
 }
 
+/*-----------------------------------------------------------------------------------------------------------------------------------------
+ *
+ * Application Header
+ ------------------------------------------------------------------------------------------------------------------------------------------
+ */
+
 .header{
 	border-bottom:1px solid #fed23a;
     height:50px;
@@ -75,4 +81,94 @@
 	    width:20px;
 	    height:20px;
 	}
+}
+
+/*-----------------------------------------------------------------------------------------------------------------------------------------
+ *
+ * Feature Story: Top of Media List
+ *
+ ------------------------------------------------------------------------------------------------------------------------------------------
+ */
+
+.title-overlay{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    min-height: 2em;
+    color:#fff;
+    text-shadow:1px 1px 1px rgba(0,0,0,0.23);
+    font-size:1em;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,0.1)), to(rgba(0,0,0,0.75)));
+    background-image: -moz-linear-gradient(rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.75) 95%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#00000000, endColorStr=#99000000, gradientTtype=0); /* Opera 11.10+ */
+    background: -webkit-linear-gradient(rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.75) 100%);
+    background: -o-linear-gradient(rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.75) 100%);
+    background: linear-gradient(rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.75) 100%); /* IE10+ */ /* W3C */
+    .date{
+	    position:absolute;
+	    right:3%;
+	    bottom:15%;
+	    left:auto;
+	    z-index:20;
+	}
+}
+.title-overlay h1{
+    padding:10px 20px;
+    font-weight: 300;
+    font-size: 1.2em;
+    margin-bottom: .5em;
+    line-height: 1.2;
+}
+
+/*-----------------------------------------------------------------------------------------------------------------------------------------
+ *
+ * Full Story
+ *
+ ------------------------------------------------------------------------------------------------------------------------------------------
+ */
+
+.main-img-wrapper{
+	width:100%;
+    position:relative;
+    img{
+    	width: 100%;
+	    max-width: 100%;
+	    height:auto;
+	    border-bottom:1px solid rgba(255,255,255,0.45);
+    }
+}
+
+.article-wrap{
+	padding: 40px 20px;
+    position:relative;
+    h1{
+    	font-family: 'Open Sans Condensed', sans-serif;
+	    font-weight: 300;
+	    font-size: 2em;
+	    margin:.8em 0;
+    }
+    .date{
+    	position: static;
+    }
+}
+
+.single-content-wrap{
+    padding-top: 20px;
+    position: relative;
+}
+.pagenav{
+    position: absolute;
+    top:10px;
+    right:20px;
+    color:#666;
+    font-size: .8em;
+}
+
+#next-page, #prev-page{
+    cursor: pointer;
+    background:rgba(0,0,0,0.3);
+    border-radius: 5px;
+    padding:10px;
+    display: inline-block;
+    margin-top:20px;
 }

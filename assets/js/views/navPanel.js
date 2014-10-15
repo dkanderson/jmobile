@@ -4,7 +4,7 @@ define(['jquery', 'backbone'], function ($, Backbone) {
 
 	var NavPanel = Backbone.View.extend({
 
-		className: 'panel panel-left',
+        className: 'panel panel-left',
 
         template: $('#navTpl').html(),
         

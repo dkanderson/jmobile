@@ -10,7 +10,7 @@ define([
         model: Model,
 
         // url: 'http://jis.gov.jm/?json=get_posts&post_type=radio_programs',
-        url: '../data/radio.json',
+        url: './data/radio.json',
 
         parse: function (resp) {
             return resp.posts;

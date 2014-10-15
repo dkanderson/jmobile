@@ -3,3 +3,4 @@ assets/img
 assets/js/vendor/*
 .sass-cache
 .DS_Store
+assets/css/main.css.map

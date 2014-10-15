@@ -1,9 +1,11 @@
 define([
+    'jquery',
     'backbone',
     'views/header',
     'views/navPanel',
+    'views/home',
     'collections/news'
-], function (Backbone, HeaderView, NavPanel, NewsCollection) {
+], function ($, Backbone, HeaderView, NavPanel, HomeView, NewsCollection) {
 
     'use strict';
 
@@ -11,7 +13,7 @@ define([
 
         // Instead of generating a new element, bind to the existing skeleton of
         // the App already present in the HTML.
-        el: '#appMain',
+        el: 'body',
 
         events: {
             // events heres
@@ -19,15 +21,19 @@ define([
 
         initialize: function () {
             //run initial functions
-            var navPanel = new NavPanel();
-            var header = new HeaderView({ nav: navPanel});
+            var self = this,
+                navPanel = new NavPanel(),
+                header = new HeaderView();
+            
 
-            this.$el.append(header.render().el);
-            this.$el.append(navPanel.render().el);
+            $('#header').append(header.render().el);
+            $('#panel').append(navPanel.render().el);
 
             NewsCollection.fetch({
                 success: function (data) {
-                    console.log(data);
+                    App.newsCollection = data;
+                    App.homeView = new HomeView({collection: App.newsCollection});
+                    self.showView(App.homeView);
                 }
             });
 
@@ -37,6 +43,19 @@ define([
         render: function () {
             this.$el.html(this.template);
             return this;
+        },
+
+        showView: function (view) {
+
+            var container = $('#appMain');
+
+            if (this.currentView) {
+                this.currentView.close();
+            }
+            this.currentView = view;
+            
+            container.html(this.currentView.$el);
+
         }
 
     });

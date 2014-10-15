@@ -12,6 +12,7 @@ define([
         initialize: function () {
             //App.helpers.mediator.on('collection:loaded', this.render, this);
             this.render();
+            App.upDate();
         },
 
         render: function () {
@@ -27,10 +28,6 @@ define([
             this.$el.append(this.featured.$el);
             this.$el.append(this.dividerBar());
             this.$el.append(this.stories.$el);
-
-            // imagesLoaded(this.featured.$el, function () {
-            //     App.helpers.attachScroll();
-            // });
 
             return this;
         },

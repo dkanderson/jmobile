@@ -1,7 +1,11 @@
+.page{
+	padding-top:50px;
+}
+
 .panel{
 	border-right: 1px solid rgba(255,255,255,0.12);
     border-top: 1px solid rgba(255,255,255,0.12);
-	background: rgba(0,0,0,0.85);
+	background: rgba(0,0,0,0.9);
 	&.panel-left{
 		top:51px;
 	    left:0;
@@ -10,4 +14,17 @@
 	    -o-transform: translateX(-400px);
 	    transform: translateX(-400px);
 	}
+}
+
+.date{
+    position: absolute;
+    bottom:10%;
+    right:5%;
+    font-family: 'open sans condensed', sans-serif;
+}
+
+.date, .author_email{
+    font-weight:300;
+    font-size:.7em;
+    color:#acacac;
 }
