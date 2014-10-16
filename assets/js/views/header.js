@@ -10,7 +10,9 @@ define(['backbone', 'handlebars', 'views/navPanel'], function (Backbone, Handleb
 
         events: {
             'click .mobile-trigger': 'openPanel',
-            'click #logoBtn': 'goBack'
+            'click #logoBtn': 'goBack',
+            'mousedown #logoBtn': 'changeColor',
+            'mouseout #logoBtn': 'resetColor'
         },
 
         initialize: function () {
@@ -30,6 +32,14 @@ define(['backbone', 'handlebars', 'views/navPanel'], function (Backbone, Handleb
         goBack: function (e) {
             e.preventDefault();
             Backbone.history.history.back();
+        },
+
+        changeColor: function () {
+            $('#logoBtn').css("background-color", "rgba(254, 214, 73, 0.5)");
+        },
+
+        resetColor: function () {
+            $('#logoBtn').css("background-color", "transparent");
         }
     });
 
