@@ -172,3 +172,52 @@
     display: inline-block;
     margin-top:20px;
 }
+
+/*-----------------------------------------------------------------------------------------------------------------------------------------
+ *
+ * Newsletter
+ *
+ ------------------------------------------------------------------------------------------------------------------------------------------
+ */
+
+.newsletter-page{
+	padding: 60px 10px 10px 10px;
+	.newsletter{
+		background:#fff;
+	    margin-bottom: 10px;
+	    padding:1.5em;
+	    position: relative;
+	    overflow: hidden;
+	    box-shadow: 1px 1px 1px rgba(0,0,0,0.12);
+	    text-align: center;
+	    h1{
+	    	text-align:center;
+	    }
+	    input{
+	    	padding:.5em;
+	    	border:1px solid rgba(0,0,0,0.2);
+	    	background:rgba(0,0,0,0.1);
+	    	border-radius:5px;
+	    	margin-bottom: 20px;
+	    	width:90%;
+	    	&:focus{
+	    		background:rgba(254, 214, 73, 0.1);
+	    	}
+	    }
+	    button{
+	    	display: inline-block;
+			@include background-image(linear-gradient(top,  #499bea 0%,#207ce5 100%));
+			border-radius: 5px;
+			border:1px solid rgba(0,0,0,0.2);
+			width:80%;
+			color:#fff;
+			padding:.5em 0;
+			text-align: center;
+			text-transform: uppercase;
+			&:focus{
+				@include background-image(linear-gradient(top, #207ce5 0%, #499bea 100%));
+			}
+	    }
+	}
+
+}
