@@ -6,8 +6,9 @@ define([
     'views/radioPrograms',
     'collections/radio',
     'collections/contact',
-    'views/contactList'
-], function ($, Backbone, FullStory, AppView, RadioPrograms, RadioCollection, ContactCollection, ContactList) {
+    'views/contactList',
+    'views/newsletter'
+], function ($, Backbone, FullStory, AppView, RadioPrograms, RadioCollection, ContactCollection, ContactList, Newsletter) {
 
     'use strict';
 
@@ -17,7 +18,8 @@ define([
             'news': 'home',
             'story/:id': 'singlePage',
             'radio': 'radio',
-            'contact': 'contact'
+            'contact': 'contact',
+            'newsletter': 'newsletter'
         },
 
         home: function () {
@@ -63,6 +65,11 @@ define([
                     App.appView.showView(App.contactList);
                 }
             });
+        },
+
+        newsletter: function () {
+            App.newsletter = new Newsletter();
+            App.appView.showView(App.newsletter);
         }
     });
 
