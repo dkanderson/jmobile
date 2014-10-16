@@ -17,7 +17,8 @@ requirejs.config({
     },
 
     'shim': {
-        'plugins/isvisible' : ['jquery']
+        'plugins/isvisible' : ['jquery'],
+        'plugins/photoswipe-si' : ['jquery']
     }
 });
 
