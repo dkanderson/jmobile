@@ -111,7 +111,7 @@
                 <p>Jamaica</p>
                 <p class="open">{{open}}</p>
                 <nav>
-                    <a class="icon-wrap" href="tel:{{phone}}"><svg class="icon icon-phone" viewBox="0 0 32 32"><use xlink:href="#icon-phone"></use></svg></a>
+                    <a class="icon-wrap" href="tel:{{phone.[0]}}"><svg class="icon icon-phone" viewBox="0 0 32 32"><use xlink:href="#icon-phone"></use></svg></a>
                     <a class="icon-wrap" href="mailto: {{email}}"><svg class="icon icon-mail" viewBox="0 0 32 32"><use xlink:href="#icon-mail"></use></svg></a>
                     <a class="icon-wrap" href="geo: {{long}}, {{lat}}"><svg class="icon icon-location" viewBox="0 0 32 32"><use xlink:href="#icon-location"></use></svg></a>
                 </nav>
@@ -119,10 +119,14 @@
 
         <!-- Newsletter -->
         <script id="nlTpl" type="text/template">
-            <h1>Sign up for our Newsletter</h1>
-            <input type="email" placeholder="Email Address">
-            <button id="signup">Sign up</button>
-            <p>Sign up to get our monthly newsletter</p>
+            <div class="newsletter">
+                <h1>Sign up for our Newsletter</h1>
+                <form id="newsletter">
+                <input type="email" placeholder="Email Address">
+                <button id="signup">Sign up</button>
+                </form>
+                <p>Sign up to get our monthly newsletter</p>
+            </div>
         </script>
 
         <!-- SVG Sprites | Application Icons -->
