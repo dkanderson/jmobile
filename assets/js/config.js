@@ -17,13 +17,13 @@ requirejs.config({
     },
 
     'shim': {
-        'plugins/isvisible' : ['jquery'],
-        'plugins/photoswipe-si' : ['jquery']
+        'plugins/isvisible': ['jquery'],
+        'plugins/photoswipe-si': ['jquery'],
     }
 });
 
 // Initialize App
-require(['jquery', 'underscore', 'backbone', 'views/app', 'routers/router', 'plugins/isvisible'], function ($, _, Backbone, AppView, Workspace) {
+require(['jquery', 'underscore', 'backbone', 'views/app', 'routers/router', 'plugins/isvisible', 'plugins/photoswipe-si'], function ($, _, Backbone, AppView, Workspace) {
 
     // Global Namespaced object to communicate between modules
     window.App = {
@@ -73,6 +73,10 @@ require(['jquery', 'underscore', 'backbone', 'views/app', 'routers/router', 'plu
                 });
             });
         },
+
+        photoswipe: function (el) {
+            Code.photoSwipe('a', el);
+        }
     };
 
     // jshint nonew:false
