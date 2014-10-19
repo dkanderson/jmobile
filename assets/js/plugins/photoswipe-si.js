@@ -288,7 +288,7 @@ return c}})();
 	Util.extend(Util, {
 		
 		DOM: {
-				
+		
 			
 			/*
 			 * Function: resetTranslate
@@ -298,20 +298,20 @@ return c}})();
 				
 				if (Util.browser.webkit){
 					if (Util.browser.is3dSupported){
-						$(el).css({ webkitTransform: 'translate3d(0px, 0px, 0px)'});
+						Util.DOM.setStyle(el, { webkitTransform: 'translate3d(0px, 0px, 0px)'});
 					}
 					else{
-						$(el).css({ webkitTransform: 'translate(0px, 0px)'});
+						Util.DOM.setStyle(el, { webkitTransform: 'translate(0px, 0px)'});
 					}
 				}
-				else {
-					$(el).css({
+				else{
+					Util.DOM.setStyle(el, {
 						webkitTransform: 'translate(0px, 0px)',
 						MozTransform: 'translate(0px, 0px)',
 						transform: 'translate(0px, 0px)'
 					});
 				}
-								
+				
 			},
 		
 		
@@ -320,11 +320,17 @@ return c}})();
 			 */
 			createElement: function(type, attributes, content){
 				
-				var retval = $('<' + type +'></' + type + '>');
-				retval.attr(attributes);
-				retval.append(content);
+				var retval = document.createElement(type);
+					
+				for(var attribute in attributes) {
+					if(attributes.hasOwnProperty(attribute)){
+						retval.setAttribute(attribute, attributes[attribute]);
+					}
+				}
+    
+				retval.innerHTML = content || '';
 				
-				return retval[0];
+				return retval;
 				
 			},
 			
@@ -334,7 +340,7 @@ return c}})();
 			 */
 			appendChild: function(childEl, parentEl){
 				
-				$(parentEl).append(childEl);
+				parentEl.appendChild(childEl);
 				
 			},
 			
@@ -344,7 +350,8 @@ return c}})();
 			 */
 			appendText: function(text, parentEl){
 				
-				$(parentEl).text(text);
+				var textNode = document.createTextNode(text);
+				Util.DOM.appendChild(textNode, parentEl);
 				
 			},
 			
@@ -354,7 +361,7 @@ return c}})();
 			 */
 			appendToBody: function(childEl){
 				
-				$('body').append(childEl);
+				this.appendChild(childEl, document.body);
 				
 			},
 			
@@ -363,8 +370,8 @@ return c}})();
 			 * Function: removeChild
 			 */
 			removeChild: function(childEl, parentEl){
-				
-				$(childEl).empty().remove();
+			
+				parentEl.removeChild(childEl);
 				
 			},
 			
@@ -375,7 +382,13 @@ return c}})();
 			 */
 			removeChildren: function(parentEl){
 				
-				$(parentEl).empty();
+				if (parentEl.hasChildNodes()){
+					
+					while (parentEl.childNodes.length >= 1){
+						parentEl.removeChild(parentEl.childNodes[parentEl.childNodes.length -1]);
+					}
+					
+				}
 			
 			},
 			
@@ -385,8 +398,8 @@ return c}})();
 			 * Function: hasAttribute
 			 */
 			hasAttribute: function(el, attributeName){
-				
-				return Util.isNothing( $(el).attr(attributeName) );
+			
+				return el.getAttribute(attributeName);
 			
 			},
 			
@@ -396,7 +409,11 @@ return c}})();
 			 */
 			getAttribute: function(el, attributeName){
 				
-				return $(el).attr(attributeName);
+				if(!this.hasAttribute(el, attributeName)){
+					return '';
+				}
+				
+				return el.getAttribute(attributeName);
 			
 			},
 			
@@ -406,7 +423,7 @@ return c}})();
 			 */
 			setAttribute: function(el, attributeName, value){
 				
-				$(el).attr(attributeName, value);
+				el.setAttribute(attributeName, value);
 				
 			},
 			
@@ -416,8 +433,12 @@ return c}})();
 			 */
 			removeAttribute: function(el, attributeName){
 				
-				$(el).removeAttr(attributeName);
+				if (this.hasAttribute(el, attributeName)){
 				
+					el.removeAttribute(attributeName);
+					
+				}
+			
 			},
 			
 			
@@ -426,8 +447,18 @@ return c}})();
 			 */
 			addClass: function(el, className){
 				
-				$(el).addClass(className);
+				var currentClassValue = Util.DOM.getAttribute(el, 'class');
 				
+				var re = new RegExp('(?:^|\\s+)' + className + '(?:\\s+|$)');
+				
+				if ( ! re.test(currentClassValue) ){
+					if (currentClassValue !== ''){
+						currentClassValue = currentClassValue + ' ';
+					}
+					currentClassValue = currentClassValue + className;
+					Util.DOM.setAttribute(el, 'class', currentClassValue);
+				}
+       
 			},
 			
 			
@@ -436,7 +467,27 @@ return c}})();
 			 */
 			removeClass: function(el, className){
 			
-				$(el).removeClass(className);
+				var currentClassValue = Util.DOM.getAttribute(el, 'class');
+				
+				var re = new RegExp('(?:^|\\s+)' + className + '(?:\\s+|$)');
+				
+				if (re.test(currentClassValue)){
+					
+					currentClassValue = currentClassValue.replace(re, ' ');
+					
+					Util.DOM.setAttribute(el, 'class', currentClassValue);
+					Util.DOM.removeClass(el, className);
+					
+				}
+				else{
+					currentClassValue = Util.trim(currentClassValue);
+					if (currentClassValue === ''){
+						Util.DOM.removeAttribute(el, 'class');
+					}
+					else{
+						Util.DOM.setAttribute(el, 'class', currentClassValue);
+					}
+				}
 				
 			},
 			
@@ -446,7 +497,8 @@ return c}})();
 			 */
 			hasClass: function(el, className){
 				
-				$(el).hasClass(className);
+				var re = new RegExp('(?:^|\\s+)' + className + '(?:\\s+|$)');
+        return re.test(Util.DOM.getAttribute(el, 'class'));
 				
 			},
 			
@@ -457,12 +509,15 @@ return c}})();
 			setStyle: function(el, style, value){
 				
 				if (Util.isObject(style)) {
-					$(el).css(style);
+					for(var propertyName in style) {
+						if(style.hasOwnProperty(propertyName)){
+							el.style[propertyName] = style[propertyName];
+						}
+					}
 				}
 				else {
-					$(el).css(style, value);
+					el.style[style] = value;
 				}
-				
 			},
 			
 			
@@ -471,7 +526,7 @@ return c}})();
 			 */
 			getStyle: function(el, styleName){
 				
-				return $(el).css(styleName);
+				return window.getComputedStyle(el,'').getPropertyValue(styleName);
 				
 			},
 			
@@ -481,7 +536,9 @@ return c}})();
 			 */
 			hide: function(el){
 				
-				$(el).hide();
+				// Store the current display value if we use show
+				Util.setElementData(el, 'oldDisplayValue', Util.DOM.getStyle(el, 'display'));
+				Util.DOM.setStyle(el, 'display', 'none');
 			
 			},
 			
@@ -491,22 +548,31 @@ return c}})();
 			 */
 			show: function(el){
 				
-				$(el).show();
+				if (Util.DOM.getStyle(el, 'display') == 'none'){
+					var oldDisplayValue = Util.getElementData(el, 'oldDisplayValue', 'block');
+					if (oldDisplayValue === 'none'){
+						oldDisplayValue = 'block';
+					}
+					Util.DOM.setStyle(el, 'display', oldDisplayValue);
+				}
 				
 			},
 			
 			
 			/*
 			 * Function: width 
-			 * Content width, exludes padding
+			 * Content width, excludes padding
 			 */
 			width: function(el, value){
 				
 				if (!Util.isNothing(value)){
-					$(el).width(value);
+					if (Util.isNumber(value)){
+						value = value + 'px';
+					}
+					el.style.width = value;
 				}
 				
-				return $(el).width();
+				return this._getDimension(el, 'width');
 				
 			},
 			
@@ -516,7 +582,12 @@ return c}})();
 			 */
 			outerWidth: function(el){
 				
-				return $(el).outerWidth();
+				var retval = Util.DOM.width(el);
+				
+				retval += parseInt(Util.DOM.getStyle(el, 'padding-left'), 10) + parseInt(Util.DOM.getStyle(el, 'padding-right'), 10); 
+				retval += parseInt(Util.DOM.getStyle(el, 'margin-left'), 10) + parseInt(Util.DOM.getStyle(el, 'margin-right'), 10); 
+				retval += parseInt(Util.DOM.getStyle(el, 'border-left-width'), 10) + parseInt(Util.DOM.getStyle(el, 'border-right-width'), 10); 
+				return retval;
 			
 			},
 			
@@ -528,12 +599,45 @@ return c}})();
 			height: function(el, value){
 				
 				if (!Util.isNothing(value)){
-					$(el).height(value);
+					if (Util.isNumber(value)){
+						value = value + 'px';
+					}
+					el.style.height = value;
 				}
 				
-				return $(el).height();
+				return this._getDimension(el, 'height');
 				
 			},
+			
+			
+			/*
+			 * Function: _getDimension
+			 */
+			_getDimension: function(el, dimension){
+				
+				var retval = window.parseInt(window.getComputedStyle(el,'').getPropertyValue(dimension));
+				
+				if (isNaN(retval)){
+					
+					// If this is the case, chances are the element is not displayed and we can't get
+					// the width and height. This temporarily shows and hides to get the value
+					var styleBackup = { 
+						display: el.style.display,
+						left: el.style.left
+					};
+					
+					el.style.display = 'block';
+					el.style.left = '-1000000px';
+					
+					retval = window.parseInt(window.getComputedStyle(el,'').getPropertyValue(dimension));
+					
+					el.style.display = styleBackup.display;
+					el.style.left = styleBackup.left;
+				}
+				return retval;
+				
+			},
+			
 			
 			
 			/*
@@ -541,8 +645,14 @@ return c}})();
 			 */
 			outerHeight: function(el){
 				
-				return $(el).outerHeight();
+				var retval = Util.DOM.height(el);
 				
+				retval += parseInt(Util.DOM.getStyle(el, 'padding-top'), 10) + parseInt(Util.DOM.getStyle(el, 'padding-bottom'), 10); 
+				retval += parseInt(Util.DOM.getStyle(el, 'margin-top'), 10) + parseInt(Util.DOM.getStyle(el, 'margin-bottom'), 10); 
+				retval += parseInt(Util.DOM.getStyle(el, 'border-top-width'), 10) + parseInt(Util.DOM.getStyle(el, 'border-bottom-width'), 10); 
+								
+				return retval;
+			
 			},
 			
 			
@@ -551,7 +661,7 @@ return c}})();
 			 */
 			documentWidth: function(){
 				
-				return $(document.documentElement).width();
+				return Util.DOM.width(document.documentElement);
 				
 			},
 
@@ -561,7 +671,7 @@ return c}})();
 			 */
 			documentHeight: function(){
 				
-				return $(document.documentElement).height();
+				return Math.round(Util.DOM.height(document.documentElement));
 				
 			},
 			
@@ -571,7 +681,7 @@ return c}})();
 			 */
 			bodyWidth: function(){
 				
-				return $(document.body).width();
+				return Util.DOM.width(document.body);
 			
 			},
 			
@@ -581,7 +691,7 @@ return c}})();
 			 */
 			bodyHeight: function(){
 				
-				return $(document.body).height();
+				return Util.DOM.height(document.body);
 			
 			},
 			
@@ -590,12 +700,9 @@ return c}})();
 			 * Function: windowWidth
 			 */
 			windowWidth: function(){
-				//IE
-				if(!window.innerWidth) {
-					return $(window).width();
-				}
-				//w3c
+			
 				return window.innerWidth;
+			
 			},
 			
 			
@@ -603,12 +710,9 @@ return c}})();
 			 * Function: windowHeight
 			 */
 			windowHeight: function(){
-				//IE
-				if(!window.innerHeight) {
-					return $(window).height();
-				}
-				//w3c
+			
 				return window.innerHeight;
+			
 			},
 			
 			
@@ -616,12 +720,9 @@ return c}})();
 			 * Function: windowScrollLeft
 			 */
 			windowScrollLeft: function(){
-				//IE
-				if(!window.pageXOffset) {
-					return $(window).scrollLeft();
-				}
-				//w3c
+			
 				return window.pageXOffset;
+			
 			},
 			
 			
@@ -629,14 +730,10 @@ return c}})();
 			 * Function: windowScrollTop
 			 */
 			windowScrollTop: function(){
-				//IE
-				if(!window.pageYOffset) {
-					return $(window).scrollTop();
-				}
-				//w3c
-				return window.pageYOffset;
-			},
 			
+				return window.pageYOffset;
+			
+			},
 			
 			
 			/*
@@ -644,7 +741,7 @@ return c}})();
 			 */
 			addEventListener: function(el, type, listener){
 				
-				$(el).bind( type,  listener );
+				el.addEventListener(type, listener, false);
 			
 			},
 			
@@ -654,7 +751,7 @@ return c}})();
 			 */
 			removeEventListener: function(el, type, listener){
 				
-				$(el).unbind( type,  listener );
+				el.removeEventListener(type, listener, false);
 			
 			},
 			
@@ -665,9 +762,23 @@ return c}})();
 			getMousePosition: function(event){
 				
 				var retval = {
-					x: event.pageX,
-					y: event.pageY
+					x: 0,
+					y: 0
 				};
+				
+				if (event.pageX) {
+					retval.x = event.pageX;
+				}
+				else if (event.clientX) {
+					retval.x = event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+				}
+			
+				if (event.pageY) {
+					retval.y = event.pageY;
+				}
+				else if (event.clientY) {
+					retval.y = event.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+				}
 				
 				return retval;
 			},
@@ -678,7 +789,7 @@ return c}})();
 			 */
 			getTouchEvent: function(event){
 				
-				return event.originalEvent;
+				return event;
 			
 			}
 			
@@ -705,13 +816,153 @@ return c}})();
 		
 		Animation: {
 			
+			_applyTransitionDelay: 50,
+			
+			/*
+			 * Function: _setTransition
+			 * Sets animation transitions on the element
+			 */
+			_setTransition: function(el, property, duration, timingFunction, delay, callback){
+				
+				var 
+					transitionPrefix = Util.Animation._getTransitionPrefix(),
+					p = Util.coalesce(property, ''),
+					d = Util.coalesce(duration, ''),
+					t, de, c;
+				
+				if (Util.isFunction(timingFunction)){
+					c = timingFunction;
+					t = '';
+					de = '';
+				}
+				else{
+					c = callback;
+					t = Util.coalesce(timingFunction, '');
+					de = Util.coalesce(delay, '');
+				}
+				
+				var transitionValues = {};
+				transitionValues[transitionPrefix + 'Property'] = p;
+				transitionValues[transitionPrefix + 'Duration'] = d;
+				transitionValues[transitionPrefix + 'TimingFunction'] = t;
+				transitionValues[transitionPrefix + 'Delay'] = de;
+								
+				Util.DOM.setStyle(el, transitionValues);
+								
+				// Wait for the above transitions to get applied
+				if (Util.isFunction(c)){
+					window.setTimeout(
+						function(){
+							c(el);
+						},
+						Util.Animation._applyTransitionDelay
+					);
+				}
+				
+			},
+			
+			
+			/*
+			 * Function: _setTransitionEndEventListener
+			 * Sets an event listener on transition end. This will:
+			 * - Remove the transitionEnd event hander
+			 * - Fire any animation end callback you specified
+			 *
+			 * The function stores a pointer to the event handler functions
+			 * on the element object itself (using Util.setElementData)
+			 *
+			 * This gives us a reference when removing the event listener
+			 */
+			_setTransitionEndEventListener: function(el){
+			
+				Util.setElementData(el, 'transitionEndEvent', function(e){
+					
+					var el = e.target;
+					
+					Util.DOM.removeEventListener(el, Util.Animation._getTransitionEndEventLabel(), Util.getElementData(el, 'transitionEndEvent'));
+					Util.removeElementData(el, 'transitionEndEvent');
+									
+					var callback = Util.getElementData(el, 'transitionEndCallback');
+					Util.removeElementData(el, 'transitionEndCallback');
+				
+					// Remove the tranistion
+					Util.Animation._removeTransitions(el);
+					
+					if (Util.isFunction(callback)){
+						
+						window.setTimeout(
+							function(){
+								callback(e);
+							},
+							Util.Animation._applyTransitionDelay
+						);
+				
+					}
+					
+				});
+				
+				
+				Util.DOM.addEventListener(el, Util.Animation._getTransitionEndEventLabel(), Util.getElementData(el, 'transitionEndEvent'));
+			
+			},
+			
+			
+			/*
+			 * Function: _removeTransitions
+			 */
+			_removeTransitions: function(el){
+				
+				var transitionPrefix = Util.Animation._getTransitionPrefix();
+				
+				var transitionValues = {};
+				transitionValues[transitionPrefix + 'Property'] = '';
+				transitionValues[transitionPrefix + 'Duration'] = '';
+				transitionValues[transitionPrefix + 'TimingFunction'] = '';
+				transitionValues[transitionPrefix + 'Delay'] = '';
+								
+				Util.DOM.setStyle(el, transitionValues);
+								
+			},
+			
+			
+			/*
+			 * Function: _getTransitionEndEventLabel
+			 */
+			_getTransitionEndEventLabel: function(){
+				
+				return (document.documentElement.style.WebkitTransition !== undefined) ? "webkitTransitionEnd" : "transitionend";
+				
+			},
+			
+			
+			_getTransitionPrefix: function(){
+				
+				return (document.documentElement.style.WebkitTransition !== undefined) ? "webkitTransition" : (document.documentElement.style.MozTransition !== undefined) ? "MozTransition" : "transition";
+				
+			},
+			
 			
 			/*
 			 * Function: stopFade
 			 */
 			stopFade: function(el){
 				
-				$(el).stop(true, true);
+				var fadeCallback = Util.getElementData(el, 'transitionEndEvent');
+				if (Util.isNothing(fadeCallback)){
+					return;
+				}
+				
+				Util.DOM.removeEventListener(
+					el, 
+					Util.Animation._getTransitionEndEventLabel(), 
+					Util.getElementData(el, 'transitionEndEvent')
+				);
+				
+				var currentOpacity = window.getComputedStyle(el,'').getPropertyValue('opacity');
+							
+				Util.Animation._removeTransitions(el);
+				
+				Util.DOM.setStyle(el, 'opacity', currentOpacity);
 				
 			},
 			
@@ -722,11 +973,18 @@ return c}})();
 			 * Make sure the element is displayed before calling
 			 */
 			fadeIn: function(el, opacity, duration, callback){
-				
+					
 				opacity = Util.coalesce(opacity, 1);
 				duration = Util.coalesce(duration, 500);
 				
-				$(el).fadeTo(duration, opacity, callback);
+				Util.setElementData(el, 'transitionEndCallback', callback);
+				
+				Util.Animation._setTransition(el, 'opacity', duration + 'ms', function(el){
+					
+					Util.Animation._setTransitionEndEventListener(el);
+					Util.DOM.setStyle(el, 'opacity', opacity);
+					
+				});
 				
 			},
 			
@@ -743,7 +1001,14 @@ return c}})();
 					duration = 500;
 				}
 				
-				$(el).fadeTo(duration, 0, callback);
+				Util.setElementData(el, 'transitionEndCallback', callback);
+				
+				Util.Animation._setTransition(el, 'opacity', duration + 'ms', function(el){
+					
+					Util.Animation._setTransitionEndEventListener(el);
+					Util.DOM.setStyle(el, 'opacity', 0);
+				
+				});
 				
 			},
 			
@@ -759,31 +1024,95 @@ return c}})();
 					duration = 500;
 				}
 				
-				var animateProps;
-				if (jQuery.fn.translation){
-					animateProps = {
-						left: '+=' + xPos + 'px',
-						top: '+=' + yPos + 'px',
-						// Added for animate enhanced plugin
-						useTranslate3d: Util.browser.is3dSupported
-					};
-				}
-				else{
-					animateProps = {
-						left: '+=' + xPos + 'px',
-						top: '+=' + yPos + 'px'
-					};
+				/* Store some values against the element for later use */
+				Util.setElementData(el, 'transitionEndCallback', Util.Animation._onSlideByEnd);
+				Util.setElementData(el, 'slideByCallback', callback);
+				Util.setElementData(el, 'slideByXPos', xPos);
+				Util.setElementData(el, 'slideByYPos', yPos);
+				
+				//ease-in-out
+				Util.Animation._setTransition(el, 'all', duration + 'ms', 'ease-in', 0, function(el){
+					
+					Util.Animation._setTransitionEndEventListener(el);
+					
+					var 
+						xPos = Util.getElementData(el, 'slideByXPos'),
+						yPos = Util.getElementData(el, 'slideByYPos');
+					
+					Util.removeElementData(el, 'slideByXPos');
+					Util.removeElementData(el, 'slideByYPos');
+					
+					
+					if (Util.browser.webkit){
+						if (Util.browser.is3dSupported){
+							Util.DOM.setStyle(el, { webkitTransform: 'translate3d(' + xPos + 'px, ' + yPos + 'px, 0)'});
+						}
+						else{
+							Util.DOM.setStyle(el, { webkitTransform: 'translate(' + xPos + 'px, ' + yPos + 'px)'});
+						}
+					}
+					else {
+						Util.DOM.setStyle(el, {
+							webkitTransform: 'translate(' + xPos + 'px, ' + yPos + 'px)',
+							MozTransform: 'translate(' + xPos + 'px, ' + yPos + 'px)',
+							transform: 'translate(' + xPos + 'px, ' + yPos + 'px)'
+						});
+					}
+					
+				});
+				
+			},
+			
+			
+			
+			_onSlideByEnd: function(e){
+					
+				// Reset the real css top and left after the transformation
+				var 
+					el = e.target,
+					
+					callback = Util.getElementData(el, 'slideByCallback'),
+					
+					transform = Util.coalesce(el.style.webkitTransform, el.style.MozTransform, el.style.transform),
+					
+					transformExploded = transform.match( /\((.*?)\)/ )[1].split(', '),
+					
+					transformedX = window.parseInt(transformExploded[0]),
+					
+					transformedY = window.parseInt(transformExploded[1]),
+					
+					domX = window.parseInt(Util.DOM.getStyle(el, 'left')),
+					
+					domY = window.parseInt(Util.DOM.getStyle(el, 'top'));
+				
+				Util.DOM.setStyle(el, {
+					webkitTransform: '',
+					MozTransform: '',
+					transform: '',
+					left: (domX + transformedX) + 'px',
+					top: (domY + transformedY) + 'px'
+				});
+				
+				
+				Util.removeElementData(el, 'slideByCallback');
+				Util.removeElementData(el, 'slideByXPos');
+				Util.removeElementData(el, 'slideByYPos');
+				
+				if (Util.isFunction(callback)){
+					window.setTimeout(
+						function(){
+							callback(e);
+						},
+						Util.Animation._applyTransitionDelay
+					);
+					//window.setTimeout(callback, Util.Animation._applyTransitionDelay, e);
 				}
 				
-				$(el).animate(
-					animateProps, 
-					duration, 
-					callback
-				);
-			
 			}
-		
+			
+			
 		}
+		
 		
 	});
 	
