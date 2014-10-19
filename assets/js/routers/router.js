@@ -7,8 +7,10 @@ define([
     'collections/radio',
     'collections/contact',
     'views/contactList',
-    'views/newsletter'
-], function ($, Backbone, FullStory, AppView, RadioPrograms, RadioCollection, ContactCollection, ContactList, Newsletter) {
+    'views/newsletter',
+    'collections/photo',
+    'views/photoList'
+], function ($, Backbone, FullStory, AppView, RadioPrograms, RadioCollection, ContactCollection, ContactList, Newsletter, PhotoCollection, Gallery) {
 
     'use strict';
 
@@ -19,7 +21,8 @@ define([
             'story/:id': 'singlePage',
             'radio': 'radio',
             'contact': 'contact',
-            'newsletter': 'newsletter'
+            'newsletter': 'newsletter',
+            'photos' : 'photos'
         },
 
         home: function () {
@@ -57,7 +60,6 @@ define([
         contact: function () {
             ContactCollection.fetch({
                 success: function (data) {
-                    console.log(data);
                     App.offices = data;
                     App.contactList = new ContactList({
                         collection: App.offices
@@ -70,6 +72,21 @@ define([
         newsletter: function () {
             App.newsletter = new Newsletter();
             App.appView.showView(App.newsletter);
+        },
+
+        photos: function () {
+            PhotoCollection.fetch({
+                success: function(data){
+                    //debugger;
+                    console.log(data);
+                    App.photos = data;
+                    App.gallery = new Gallery({
+                        collection: App.photos
+                    });
+                    App.appView.showView(App.gallery);
+                }
+            });
+
         }
     });
 
