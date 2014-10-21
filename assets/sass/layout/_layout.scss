@@ -5,6 +5,7 @@
 
 #appMain{
 	padding-top:50px;
+	position: relative;
 }
 
 /*-----------------------------------------------------------------------------------------------------------------------------------------
@@ -237,3 +238,23 @@
 .gallery-item { float: left; width: 33.33333333%}
 .gallery-item a { display: block; margin: 5px; border: 1px solid #3c3c3c; }
 .gallery-item img { display: block; width: 100%; height: auto; }
+
+
+/*-----------------------------------------------------------------------------------------------------------------------------------------
+ *
+ * Basic Page
+ *
+ ------------------------------------------------------------------------------------------------------------------------------------------
+ */
+
+
+.page{
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: translate3d(0, 0, 0);
+  -webkit-transition-duration: .25s;
+  transition-duration: .25s;
+}

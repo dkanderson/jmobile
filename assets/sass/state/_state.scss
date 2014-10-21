@@ -21,3 +21,14 @@
 @keyframes come-in {
   to { transform: translateY(0); }
 }
+
+.page.left{
+  transform: translate3d(-100%,0,0);
+}
+.page.center{
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+.page.right{
+  transform: translate3d(100%,0,0);
+}
