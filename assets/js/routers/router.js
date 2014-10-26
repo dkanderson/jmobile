@@ -9,8 +9,9 @@ define([
     'views/contactList',
     'views/newsletter',
     'collections/photo',
-    'views/photoList'
-], function ($, Backbone, FullStory, AppView, RadioPrograms, RadioCollection, ContactCollection, ContactList, Newsletter, PhotoCollection, Gallery) {
+    'views/photoList',
+    'views/page'
+], function ($, Backbone, FullStory, AppView, RadioPrograms, RadioCollection, ContactCollection, ContactList, Newsletter, PhotoCollection, Gallery, PageView) {
 
     'use strict';
 
@@ -25,15 +26,27 @@ define([
             'photos' : 'photos'
         },
 
+        initialize: function () {
+            App.Vent.on('nextpage', this.gotoPage, this);
+            App.Vent.on('prevpage', this.gotoPage, this);
+        },
+
+        gotoPage: function (id) {
+            this.navigate('story/' + id, {
+                trigger: true
+            });
+        },
+
         home: function () {
             if (App.homeView) {
                 // Show home view already in memory
-                App.appView.showView(App.homeView);
+                this.slidePage(App.homeView);
+                this.navigate('news');
 
             } else {
                 // Instantiate app
                 App.appView = new AppView();
-
+                this.navigate('news');
             }
         },
 
@@ -41,52 +54,72 @@ define([
             App.currentStory = new FullStory({
                 model: App.newsCollection.get(id)
             });
-            App.appView.showView(App.currentStory);
+            this.slidePage(App.currentStory);
         },
 
         radio: function () {
+            var self = this;
             RadioCollection.fetch({
                 success: function (data) {
                     App.radioCollection = data;
                     App.radioPrograms = new RadioPrograms({
                         collection: App.radioCollection
                     });
-                    App.appView.showView(App.radioPrograms);
+                    self.slidePage(App.radioPrograms);
                 }
             });
 
         },
 
         contact: function () {
+            var self = this;
             ContactCollection.fetch({
                 success: function (data) {
                     App.offices = data;
                     App.contactList = new ContactList({
                         collection: App.offices
                     });
-                    App.appView.showView(App.contactList);
+                    self.slidePage(App.contactList);
                 }
             });
         },
 
         newsletter: function () {
             App.newsletter = new Newsletter();
-            App.appView.showView(App.newsletter);
+            this.slidePage(App.newsletter);
         },
 
         photos: function () {
+            var self = this;
             PhotoCollection.fetch({
                 success: function(data){
-                    //debugger;
-                    console.log(data);
                     App.photos = data;
                     App.gallery = new Gallery({
                         collection: App.photos
                     });
-                    App.appView.showView(App.gallery);
+                    self.slidePage(App.gallery);
                 }
             });
 
+        },
+
+        slidePage: function (view) {
+            var l = App.stateHistory.length,
+            state = window.location.hash;
+            
+            if (l === 0) {
+                App.stateHistory.push(state);
+                App.appView.showView(view);
+                return;
+            }
+
+            if (state === App.stateHistory[l-2]) {
+                App.stateHistory.pop();
+                App.appView.showView(view, 'left');
+            } else {
+                App.stateHistory.push(state);
+                App.appView.showView(view, 'right');
+            }
         }
     });
 
