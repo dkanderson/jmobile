@@ -9,9 +9,8 @@ define([
     'views/contactList',
     'views/newsletter',
     'collections/photo',
-    'views/photoList',
-    'views/page'
-], function ($, Backbone, FullStory, AppView, RadioPrograms, RadioCollection, ContactCollection, ContactList, Newsletter, PhotoCollection, Gallery, PageView) {
+    'views/photoList'
+], function ($, Backbone, FullStory, AppView, RadioPrograms, RadioCollection, ContactCollection, ContactList, Newsletter, PhotoCollection, Gallery) {
 
     'use strict';
 
@@ -106,7 +105,7 @@ define([
         slidePage: function (view) {
             var l = App.stateHistory.length,
             state = window.location.hash;
-            
+
             if (l === 0) {
                 App.stateHistory.push(state);
                 App.appView.showView(view);
