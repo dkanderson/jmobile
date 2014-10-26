@@ -1,11 +1,12 @@
 define([
     'jquery',
+    'underscore',
     'backbone',
     'views/header',
     'views/navPanel',
     'views/home',
     'collections/news'
-], function ($, Backbone, HeaderView, NavPanel, HomeView, NewsCollection) {
+], function ($, _, Backbone, HeaderView, NavPanel, HomeView, NewsCollection) {
 
     'use strict';
 
@@ -24,7 +25,6 @@ define([
             var self = this,
                 navPanel = new NavPanel(),
                 header = new HeaderView();
-            
 
             $('#header').append(header.render().el);
             $('#panel').append(navPanel.render().el);
@@ -32,8 +32,11 @@ define([
             NewsCollection.fetch({
                 success: function (data) {
                     App.newsCollection = data;
-                    App.homeView = new HomeView({collection: App.newsCollection});
+                    App.homeView = new HomeView({
+                        collection: App.newsCollection
+                    });
                     self.showView(App.homeView);
+                    App.stateHistory.push(window.location.hash);
                 }
             });
 
@@ -45,16 +48,34 @@ define([
             return this;
         },
 
-        showView: function (view) {
+        showView: function (view, direction) {
 
-            var container = $('#appMain');
+            var container = $('#appMain'),
+                self = this;
 
-            if (this.currentView) {
-                this.currentView.close();
+            // If first View dont transition
+            if (!this.currentView) {
+                this.currentView = view;
+                container.html(view.$el.addClass('center'));
+                return;
             }
-            this.currentView = view;
-            
-            container.html(this.currentView.$el);
+
+            // append view and position at the start of the animation
+            container.append(view.$el.addClass(direction));
+
+            // destroy previous view after transition ends
+            this.currentView.$el.one('transitionend', function (e) {
+                self.currentView.close();
+                self.currentView = view;
+            });
+                
+            // animate new page in and previous page out
+            var animateIn = function () {
+                view.$el.removeClass(direction).addClass('center');
+                self.currentView.$el.removeClass('center').addClass(direction === 'left' ? 'right' : 'left');
+            };
+
+            _.delay(animateIn, 20);
 
         }
 
