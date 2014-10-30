@@ -4,9 +4,10 @@ define(['backbone', 'views/contact'], function (Backbone, ContactView) {
 
     var ContactList = Backbone.View.extend({
 
-        className: 'media-box-list',
+        className: 'page',
 
         initialize: function () {
+            this.wrapper = this.$el.html('<div class="media-box-list"></div>');
             this.renderAll();
             App.moveUp('office-location');
 
@@ -15,7 +16,7 @@ define(['backbone', 'views/contact'], function (Backbone, ContactView) {
         render: function (model) {
             var office = new ContactView({model: model});
 
-            this.$el.append(office.render().el);
+            this.$el.find('.media-box-list').append(office.render().el);
             return this;
         },
 
