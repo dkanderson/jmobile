@@ -58,6 +58,7 @@
 	    font-weight: 100;
 	    text-transform: uppercase;
 	    color:#fed23a;
+	    margin: 0;
 	    span{
 	    	color:#fff;
     		font-weight:300;
@@ -235,9 +236,23 @@
  */
 
 
-.gallery-item { float: left; width: 33.33333333%}
-.gallery-item a { display: block; margin: 5px; border: 1px solid #3c3c3c; }
-.gallery-item img { display: block; width: 100%; height: auto; }
+.gallery-item { 
+	float: left; 
+	width: 33.33333333%
+}
+.gallery-item a { 
+	display: block; 
+	margin: 5px; 
+	border-bottom: 2px solid #ccc;
+	border-right: 1px solid #ccc;
+	padding:4px; 
+	background-color: #fff; 
+}
+.gallery-item img { 
+	display: block; 
+	width: 100%; 
+	height: auto; 
+}
 
 
 /*-----------------------------------------------------------------------------------------------------------------------------------------
