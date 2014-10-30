@@ -15,10 +15,14 @@ define(['jquery', 'backbone'], function ($, Backbone) {
         initialize: function () {
             this.render();
             App.Vent.on('toggle:panel', this.toggle, this);
+            App.Vent.on('close:panel', this.closePanel, this);
+            App.Vent.on('swiped:left', this.closePanel, this);
+            App.Vent.on('swiped:right', this.openPanel, this);
         },
         
         closePanel: function () {
             this.$el.removeClass('panel-is-open');
+            App.Vent.trigger('panel:closed');
         },
         
         openPanel: function () {
@@ -27,6 +31,9 @@ define(['jquery', 'backbone'], function ($, Backbone) {
         
         toggle: function () {
             this.$el.toggleClass('panel-is-open');
+            if(!(this.$el.hasClass('panel-is-open'))) {
+                App.Vent.trigger('panel:closed');
+            }
         },
         
         render: function () {
