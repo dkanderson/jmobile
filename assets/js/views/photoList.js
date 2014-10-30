@@ -4,7 +4,7 @@ define(['backbone', 'views/photo'], function (Backbone, PhotoView) {
 
     var PhotoList = Backbone.View.extend({
 
-        className: 'photo-gallery',
+        className: 'photo-gallery page',
 
         initialize: function () {
             this.renderAll();
