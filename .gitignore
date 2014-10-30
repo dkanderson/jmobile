@@ -1,6 +1,7 @@
 node_modules
 assets/img
 assets/js/vendor/*
+assets/js/plugins/*
 .sass-cache
 .DS_Store
 assets/css/*
