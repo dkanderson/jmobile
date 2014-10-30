@@ -5,15 +5,17 @@ requirejs.config({
     baseUrl: "assets/js",
     paths: {
         //The Libraries
-        jquery: 'vendor/jquery/dist/jquery',
-        backbone: 'vendor/backbone/backbone',
-        underscore: 'vendor/underscore/underscore',
-        handlebars: 'vendor/handlebars/handlebars',
-        text: 'vendor/text/text',
-        templates: 'templates',
-        hammer: 'plugins/hammer',
-        fastclick: 'plugins/fastclick',
-        iscroll: 'plugins/iscroll-lite'
+        'jquery': 'vendor/jquery/dist/jquery',
+        'backbone': 'vendor/backbone/backbone',
+        'underscore': 'vendor/underscore/underscore',
+        'handlebars': 'vendor/handlebars/handlebars',
+        'text': 'vendor/text/text',
+        'templates': 'templates',
+        'fastclick': 'plugins/fastclick',
+        'iscroll': 'plugins/iscroll-lite',
+        'hammerjs': 'vendor/hammerjs/hammer',
+        'jquery-hammerjs': 'vendor/jquery-hammerjs/jquery.hammer',
+        'backbone-hammer': 'vendor/backbone.hammer/backbone.hammer'
     },
 
     'shim': {
@@ -25,9 +27,23 @@ requirejs.config({
 // Initialize App
 require(['jquery', 'underscore', 'backbone', 'views/app', 'routers/router', 'plugins/isvisible', 'plugins/photoswipe-si'], function ($, _, Backbone, AppView, Workspace) {
 
+    Backbone.View.prototype.close = function () {
+        this.remove();
+        this.unbind();
+        if (this.onClose) {
+            this.onClose();
+        }
+    };
+
     // Global Namespaced object to communicate between modules
     window.App = {
         Vent: _.extend({}, Backbone.Events),
+
+        container: $('#appMain'),
+
+        panel: $('#panel').find('.panel'),
+
+        stateHistory: [],
 
         upDate: function () {
             // Takes an ISO time and returns a string representing how
@@ -87,11 +103,4 @@ require(['jquery', 'underscore', 'backbone', 'views/app', 'routers/router', 'plu
     // Initialize the application view
     //window.App.appView = new AppView();
 
-    Backbone.View.prototype.close = function () {
-        this.remove();
-        this.unbind();
-        if (this.onClose) {
-            this.onClose();
-        }
-    };
 });
