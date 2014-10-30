@@ -4,11 +4,10 @@ define(['backbone', 'views/radioProgram'], function (Backbone, RadioProgram) {
 
     var RadioPrograms = Backbone.View.extend({
 
-        tagName: 'ul',
-
-        className: 'icon-list',
+        className: 'page',
 
         initialize: function () {
+            this.$el.html('<ul class="icon-list"></ul>');
             this.render();
             App.upDate();
             App.moveUp('rp');
@@ -24,7 +23,7 @@ define(['backbone', 'views/radioProgram'], function (Backbone, RadioProgram) {
             var radioProgram = new RadioProgram({
                 model: radioModel
             });
-            this.$el.append(radioProgram.render().el);
+            this.$el.find('.icon-list').append(radioProgram.render().el);
         }
 
     });
