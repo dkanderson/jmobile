@@ -4,9 +4,9 @@ define(['backbone'], function (Backbone){
 
 	var Newsletter = Backbone.View.extend({
 
-		className: 'newsletter-page',
+		className: 'page',
 
-		template: $('#nlTpl').html(),
+		template: '<div class="newsletter-page">' + $('#nlTpl').html() + '</div>',
 
 		initialize: function () {
 			this.render();
