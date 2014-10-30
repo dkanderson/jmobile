@@ -30,10 +30,9 @@ define([
             App.Vent.on('prevpage', this.gotoPage, this);
         },
 
-        gotoPage: function (id) {
-            this.navigate('story/' + id, {
-                trigger: true
-            });
+        gotoPage: function (options) {
+            this.singlePage(options.id, options.direction);
+            //this.navigate('story/' + options.id);
         },
 
         home: function () {
@@ -49,11 +48,11 @@ define([
             }
         },
 
-        singlePage: function (id) {
+        singlePage: function (id, direction) {
             App.currentStory = new FullStory({
                 model: App.newsCollection.get(id)
             });
-            this.slidePage(App.currentStory);
+            this.slidePage(App.currentStory, direction);
         },
 
         radio: function () {
@@ -102,7 +101,8 @@ define([
 
         },
 
-        slidePage: function (view) {
+        slidePage: function (view, direction) {
+            //var dir = null || direction;
             var l = App.stateHistory.length,
             state = window.location.hash;
 
@@ -112,13 +112,19 @@ define([
                 return;
             }
 
-            if (state === App.stateHistory[l-2]) {
-                App.stateHistory.pop();
-                App.appView.showView(view, 'left');
+            if(direction){
+                App.appView.showView(view, direction);
+                return;
             } else {
-                App.stateHistory.push(state);
-                App.appView.showView(view, 'right');
+               if (state === App.stateHistory[l-2]) {
+                    App.stateHistory.pop();
+                    App.appView.showView(view, 'left');
+                } else {
+                    App.stateHistory.push(state);
+                    App.appView.showView(view, 'right');
+                }
             }
+
         }
     });
 
