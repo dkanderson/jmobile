@@ -43,6 +43,11 @@ require(['jquery', 'underscore', 'backbone', 'views/app', 'routers/router', 'plu
 
         panel: $('#panel').find('.panel'),
 
+        deviceInfo: {
+            deviceWidth: window.innerWidth || document.body.offsetWidth,
+            deviceHeight: window.innerHeight || document.body.offsetHeight
+        },
+
         stateHistory: [],
 
         upDate: function () {
@@ -94,6 +99,8 @@ require(['jquery', 'underscore', 'backbone', 'views/app', 'routers/router', 'plu
             Code.photoSwipe('a', el);
         }
     };
+
+    window.App.container.height(window.App.deviceInfo.deviceHeight);
 
     // jshint nonew:false
     // Initialize routing and start Backbone.history()
