@@ -32,6 +32,7 @@
     "modernizr": "~2.8.3",
     "hammerjs": "~2.0.4",
     "jquery.hammerjs": "https://github.com/hammerjs/jquery.hammer.js.git",
-    "backbone.hammer": "~1.0.1"
+    "backbone.hammer": "~1.0.1",
+    "imagesloaded": "https://github.com/desandro/imagesloaded.git#~3.1.8"
   }
 }
