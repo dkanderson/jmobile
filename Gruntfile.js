@@ -138,6 +138,19 @@ module.exports = function (grunt) {
                 ]
             }
 
+        },
+
+        copy: {
+            dev: {
+                files: [
+                    {expand: true, cwd: 'assets/img/', src: ['**'], dest: 'build/img/', filter: 'isFile'},
+                ]
+            },
+            build: {
+                files: [
+                    {expand: true, cwd: 'build/', src: ['**'], dest: 'jmobileNative/www/', filter: 'isFile'},
+                ]
+            }
         }
     });
 
@@ -148,7 +161,8 @@ module.exports = function (grunt) {
     grunt.registerTask('dev', [
         'jshint',
         'sass',
-        'autoprefixer:dev'
+        'autoprefixer:dev',
+        'copy:dev'
     ]);
     grunt.registerTask('build', [
         'jshint',
@@ -157,7 +171,8 @@ module.exports = function (grunt) {
         'cssmin',
         'autoprefixer:build',
         'modernizr',
-        'processhtml'
+        'processhtml',
+        'copy:build'
     ]);
 
 };
