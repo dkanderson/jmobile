@@ -17,7 +17,7 @@
     </head>
     <body>
         <div id="header"></div>
-        <div id="appMain"></div>
+        <div id="appMain"><div class="loading"></div></div>
         <div id="panel"></div>
 
         
@@ -50,7 +50,7 @@
                         <img src="{{ thumbnail_images.profile-thumb.url }}" alt="">
                 </div>
                 <div class="title-wrap">
-                        <h2>{{ title }}</h2>
+                        <h2>{{{ title }}}</h2>
                         <time class="date" title="{{date}}"></time>
                 </div>
             </a>
@@ -59,7 +59,7 @@
         <!-- Photo View: Featured Story -->
         <script id="featuredTpl" type="text/template">
             <a href="#story/{{id}}" class="main-story-wrap featured">
-                <div class="title-overlay"><h1>{{title}}</h1><time class="date" title="{{date}}"></time></div>
+                <div class="title-overlay"><h1>{{{title}}}</h1><time class="date" title="{{date}}"></time></div>
                 <img src="{{thumbnail_images.story-image.url}}" alt="Feature Story">
             </a>
         </script>
@@ -72,7 +72,7 @@
             <div class="article-wrap">
                     <div class="pagenav"></div>
                     {{#if jis_author}}<span class="author">{{jis_author}} </span>{{/if}}<em class="author_email">{{author_email}}</em>
-                    <h1>{{title}}</h1>
+                    <h1>{{{title}}}</h1>
                     <span>{{categories.1.title}} |</span> <a class="date" title="{{date}}"></a>
                     <div class="single-content-wrap">
                             {{{content}}}
