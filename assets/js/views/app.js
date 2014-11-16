@@ -5,8 +5,10 @@ define([
     'views/header',
     'views/navPanel',
     'views/home',
-    'collections/news'
-], function ($, _, Backbone, HeaderView, NavPanel, HomeView, NewsCollection) {
+    'collections/news',
+    'vendor/imagesloaded/imagesloaded.pkgd'
+
+], function ($, _, Backbone, HeaderView, NavPanel, HomeView, NewsCollection, imagesLoaded) {
 
     'use strict';
 
@@ -15,10 +17,6 @@ define([
         // Instead of generating a new element, bind to the existing skeleton of
         // the App already present in the HTML.
         el: 'body',
-
-        events: {
-            // events heres
-        },
 
         initialize: function () {
             //run initial functions
@@ -49,30 +47,37 @@ define([
         },
 
         showView: function (view, direction) {
+            App.appView.delegateEvents();
 
-            var container = $('#appMain'),
-                self = this;
+            var that = this;
+
+            App.panel.removeClass('panel-is-open');
 
             // If first View dont transition
             if (!this.currentView) {
                 this.currentView = view;
-                container.html(view.$el.addClass('center'));
+                App.container.html('<div class="loading"></div>');
+                imagesLoaded(App.container, function(){
+                    App.container.html(view.$el.addClass('center'));
+                });
+
                 return;
             }
 
             // append view and position at the start of the animation
-            container.append(view.$el.addClass(direction));
+            App.container.append(view.$el.addClass(direction));
 
             // destroy previous view after transition ends
             this.currentView.$el.one('transitionend', function (e) {
-                self.currentView.close();
-                self.currentView = view;
+                that.currentView.remove();
+                that.currentView.unbind();
+                that.currentView = view;
             });
-                
+
             // animate new page in and previous page out
             var animateIn = function () {
                 view.$el.removeClass(direction).addClass('center');
-                self.currentView.$el.removeClass('center').addClass(direction === 'left' ? 'right' : 'left');
+                that.currentView.$el.removeClass('center').addClass(direction === 'left' ? 'right' : 'left');
             };
 
             _.delay(animateIn, 20);
