@@ -1,4 +1,4 @@
-define(['backbone', 'handlebars'], function (Backbone, Handlebars) {
+define(['backbone', 'handlebars', 'hammerjs', 'jquery-hammerjs'], function (Backbone, Handlebars) {
 
     'use strict';
 
@@ -10,8 +10,8 @@ define(['backbone', 'handlebars'], function (Backbone, Handlebars) {
         events: {
             'click #next-page': 'getNextPage',
             'click #prev-page': 'getPrevPage',
-            'swipeleft': 'handleSwipe',
-            'swiperight': 'handleSwipe'
+            'panleft': 'handleSwipe',
+            'panright': 'handleSwipe'
         },
 
         initialize: function () {
@@ -19,33 +19,27 @@ define(['backbone', 'handlebars'], function (Backbone, Handlebars) {
         },
 
         handleSwipe: function (e) {
-            var panel = $('#right-panel');
-            if (panel.hasClass('show-panel')) {
-                if (e.type === 'swipeleft') {
-                    panel.removeClass('show-panel');
+
+            if(e.type === 'panleft'){
+                this.getNextPage();
+                if(this.indexTracker <= 19){
+                    this.undelegateEvents();
                 }
             } else {
-                if (e.type === 'swipeleft') {
-                    this.getNextPage();
-                } else {
-                    this.getPrevPage();
+                this.getPrevPage();
+                if(this.indexTracker >= 0){
+                    this.undelegateEvents();
                 }
+
             }
+
         },
 
         render: function () {
             this.$el.html(this.template(this.model.toJSON()));
             this.pagination();
-            //this.$el.hammer();
+            this.$el.hammer();
             App.upDate();
-
-            $('html,body').animate({
-                scrollTop: 0
-            }, 'slow');
-
-            // imagesLoaded(this.$el, function () {
-            //     App.helpers.attachScroll();
-            // });
 
             return this;
         },
@@ -57,8 +51,12 @@ define(['backbone', 'handlebars'], function (Backbone, Handlebars) {
             var currentIndex = this.getCurrentIndex(),
                 nextPageId;
             if (currentIndex <= 18) {
-                nextPageId = this.model.collection.at(currentIndex + 1).get('id');
-                App.Vent.trigger('nextpage', nextPageId);
+                this.indexTracker = currentIndex + 1;
+                nextPageId = this.model.collection.at(this.indexTracker).get('id');
+                App.Vent.trigger('nextpage', {
+                    id: nextPageId,
+                    direction: 'right'
+                });
             }
         },
 
@@ -66,10 +64,14 @@ define(['backbone', 'handlebars'], function (Backbone, Handlebars) {
             var currentIndex = this.getCurrentIndex(),
                 prevPageId;
             if (currentIndex >= 1) {
-                prevPageId = this.model.collection.at(currentIndex - 1).get('id');
-                App.Vent.trigger('prevpage', prevPageId);
+                this.indexTracker = currentIndex - 1;
+                prevPageId = this.model.collection.at(this.indexTracker).get('id');
+                App.Vent.trigger('prevpage', {
+                    id: prevPageId,
+                    direction: 'left'
+                });
             } else {
-                App.Vent.tigger('open:panel');
+                App.Vent.trigger('open:panel');
             }
         },
 
