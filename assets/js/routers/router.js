@@ -1,5 +1,4 @@
 define([
-    'jquery',
     'backbone',
     'views/fullstory',
     'views/app',
@@ -9,8 +8,9 @@ define([
     'views/contactList',
     'views/newsletter',
     'collections/photo',
+    'views/galleries',
     'views/photoList'
-], function ($, Backbone, FullStory, AppView, RadioPrograms, RadioCollection, ContactCollection, ContactList, Newsletter, PhotoCollection, Gallery) {
+], function (Backbone, FullStory, AppView, RadioPrograms, RadioCollection, ContactCollection, ContactList, Newsletter, PhotoCollection, Gallery, PhotoList) {
 
     'use strict';
 
@@ -22,7 +22,8 @@ define([
             'radio': 'radio',
             'contact': 'contact',
             'newsletter': 'newsletter',
-            'photos' : 'photos'
+            'photos' : 'photos',
+            'gallery/:id': 'gallery'
         },
 
         initialize: function () {
@@ -93,6 +94,26 @@ define([
                 success: function(data){
                     App.photos = data;
                     App.gallery = new Gallery({
+                        collection: App.photos
+                    });
+                    self.slidePage(App.gallery);
+                }
+            });
+
+        },
+
+        gallery: function (id) {
+            var self = this,
+                currentGallery = new Backbone.Collection();
+
+            currentGallery.url = 'https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&photoset_id=' + id + '&format=json&nojsoncallback=1&api_key=cf3f96e93b49ff3332e89e7817b3885e';
+            currentGallery.parse = function (resp) {
+                return resp.photoset.photo;
+            };
+            currentGallery.fetch({
+                success: function(data){
+                    App.photos = data;
+                    App.gallery = new PhotoList({
                         collection: App.photos
                     });
                     self.slidePage(App.gallery);
